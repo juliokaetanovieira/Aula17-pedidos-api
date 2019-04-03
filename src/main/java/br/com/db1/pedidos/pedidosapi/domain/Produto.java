@@ -30,6 +30,8 @@ public class Produto {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "statusprod", length = 30, nullable = false)
 	private StatusProduto statusprod;
+	
+	protected Produto() {} //Somente para o JPA
 
 	public Produto(String codigo, String nome, Double valor) {
 
@@ -44,7 +46,7 @@ public class Produto {
 	}
 
 	public void inativar() {
-		if (StatusProduto.ATIVO.equals(this.statusprod)) {
+		if (!StatusProduto.ATIVO.equals(this.statusprod)) {
 			throw new RuntimeException("Produto est� " + this.statusprod);
 		}
 		this.statusprod = StatusProduto.INATIVO;
