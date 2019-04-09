@@ -9,29 +9,29 @@ import org.springframework.stereotype.Service;
 
 import br.com.db1.pedidos.pedidosapi.domain.dto.ProdutoDTO;
 import br.com.db1.pedidos.pedidosapi.domain.entity.Produto;
+import br.com.db1.pedidos.pedidosapi.domain.entity.StatusProduto;
 import br.com.db1.pedidos.pedidosapi.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService {
-	
-	@Autowired
-	private ProdutoRepository produtoRepository;
-	
-	public List<ProdutoDTO> getAll(){
-		//Fazer teste para se passar o valor nulo
-		Iterable<Produto> produtosDatabase = produtoRepository.findAll();
-		Iterator<Produto> iterator = produtosDatabase.iterator();
-		
-		List<ProdutoDTO> produtos = new ArrayList<>();
-		
-		while(iterator.hasNext()){
-			Produto next = iterator.next();
-			ProdutoDTO produtoDTO = new ProdutoDTO(next.getCodigo(), next.getNome(), next.getValor());
-			produtos.add(produtoDTO);
-		}
-		
-		return produtos;
-		//Refazer em 3 linhas
-	}
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+    
+    public List<ProdutoDTO> getAll() {
+        Iterable<Produto> produtosDatabase = produtoRepository.findByStatus(StatusProduto.ATIVO);
+        Iterator<Produto> iterator = produtosDatabase.iterator();
+        
+        List<ProdutoDTO> produtos = new ArrayList<>();
+        
+        while(iterator.hasNext()) {
+            Produto next = iterator.next();
+            ProdutoDTO produtoDTO = new ProdutoDTO(next.getCodigo(), next.getNome(), next.getValor());
+            produtos.add(produtoDTO);	
+        }
+        
+        return produtos;
+    }
+    
+    
 }

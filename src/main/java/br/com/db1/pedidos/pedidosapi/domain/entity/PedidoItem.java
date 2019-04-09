@@ -1,41 +1,66 @@
 package br.com.db1.pedidos.pedidosapi.domain.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import br.com.db1.pedidos.pedidosapi.infraestrutura.Checker;
 
+@Entity
+@Table(name = "pedido_item")
 public class PedidoItem {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "id_produto", referencedColumnName = "id")
 	private Produto produto;
+
+	@Column(name = "quantidade", nullable = false, precision = 16, scale = 3)
 	private Double quantidade;
+
+	@Column(name = "valor_unitario", nullable = false, precision = 16, scale = 3)
 	private Double valorUnitario;
 
-	public PedidoItem(Produto produto, Double quantidade) {
+	@ManyToOne
+	@JoinColumn(name = "id_pedido", referencedColumnName = "id")
+	private Pedido pedido;
+
+	public PedidoItem(Pedido pedido, Produto produto, Double quantidade) {
 		Checker.naoNulo(produto, "produto");
 		Checker.naoNulo(quantidade, "quantidade");
 		Checker.maiorQueZero(quantidade, "quantidade");
-		
-		if(!produto.isAtivo()) {
+
+		if (!produto.isAtivo()) {
 			throw new RuntimeException("Produto " + produto.getNome() + " est� " + produto.getStatus());
 		}
 
+		this.pedido = pedido;
 		this.produto = produto;
 		this.quantidade = quantidade;
 		this.valorUnitario = produto.getValor();
-
 	}
 
 	public Produto getProduto() {
-		return this.produto;
+		return produto;
 	}
 
 	public Double getQuantidade() {
-		return this.quantidade;
+		return quantidade;
 	}
-	
+
 	public Double getValorUnitario() {
 		return valorUnitario;
 	}
-	
+
 	public Double getValorTotal() {
 		return this.quantidade * this.valorUnitario;
 	}
-
 }

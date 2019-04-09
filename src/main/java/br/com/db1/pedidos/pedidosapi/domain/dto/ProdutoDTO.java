@@ -1,28 +1,54 @@
 package br.com.db1.pedidos.pedidosapi.domain.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ProdutoDTO implements Serializable {
-	
-	private static final long serialVersionUID = 23L;
+
+	public static final long serialVersionUID = 23L;
+
 	private String codigo;
 	private String nome;
 	private Double valor;
 
+	public ProdutoDTO() {
+		super();
+
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+
 	public ProdutoDTO(String codigo, String nome, Double valor) {
 		this.codigo = codigo;
 		this.nome = nome;
-		this.valor = valor;		
+		this.valor = valor;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
-		return result;
+		return Objects.hash(codigo, nome, valor);
 	}
 
 	@Override
@@ -37,30 +63,8 @@ public class ProdutoDTO implements Serializable {
 			return false;
 		}
 		ProdutoDTO other = (ProdutoDTO) obj;
-		if (codigo == null) {
-			if (other.codigo != null) {
-				return false;
-			}
-		} else if (!codigo.equals(other.codigo)) {
-			return false;
-		}
-		if (nome == null) {
-			if (other.nome != null) {
-				return false;
-			}
-		} else if (!nome.equals(other.nome)) {
-			return false;
-		}
-		if (valor == null) {
-			if (other.valor != null) {
-				return false;
-			}
-		} else if (!valor.equals(other.valor)) {
-			return false;
-		}
-		return true;
+		return Objects.equals(codigo, other.codigo) && Objects.equals(nome, other.nome)
+				&& Objects.equals(valor, other.valor);
 	}
-	
-	
 
 }
